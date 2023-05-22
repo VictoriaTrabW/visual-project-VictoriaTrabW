@@ -123,7 +123,7 @@ true_labels = label_encoder.inverse_transform(test_labels.astype(int))
 classification_rep = classification_report(true_labels, y_pred_labels)
 
 # Save the classification report to a file
-out_folder = "out"
+out_folder = "visual-project-VictoriaTrabW/out"
 classification_rep_path = os.path.join(out_folder, "classification_report.txt")
 with open(classification_rep_path, "w") as file:
     file.write(classification_rep)
