@@ -1,7 +1,6 @@
 # Self-assigned project: Chest X-Ray Image Classification
 This repository contains my self-assigned project in visual analytics.
 
-Chest X-Ray Images Classification
 This project aims to classify chest X-ray images into two categories: Pneumonia and Normal. The dataset consists of 5,863 X-ray images obtained from pediatric patients. The goal is to build and evaluate  a model that can identify pneumonia cases from chest X-ray images.
 
 The purpose
