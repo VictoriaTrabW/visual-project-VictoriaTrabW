@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import cv2
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import classification_report
 
 # Defining data paths
 dataset_path = "VictoriaTrabWorm#9563/chest_xray"
@@ -108,4 +109,45 @@ model.add(Dense(1, activation='sigmoid'))
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 # Training the model
-history = model.fit(train_images, train_labels, epochs=5, validation_data=(val_images, val_labels))
+history = model.fit(train_images, train_labels, epochs=10, validation_data=(val_images, val_labels))
+
+# Making predictions on the test set
+y_pred = model.predict(test_images)
+y_pred = np.round(y_pred).flatten()
+
+# Converting the predictions and true labels back to their original form
+y_pred_labels = label_encoder.inverse_transform(y_pred.astype(int))
+true_labels = label_encoder.inverse_transform(test_labels.astype(int))
+
+# Generating the classification report
+classification_rep = classification_report(true_labels, y_pred_labels)
+
+# Save the classification report to a file
+out_folder = "out"
+classification_rep_path = os.path.join(out_folder, "classification_report.txt")
+with open(classification_rep_path, "w") as file:
+    file.write(classification_rep)
+
+# Plotting the training and validation accuracy
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('Model Accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.legend(['Train', 'Validation'], loc='upper left')
+accuracy_plot_path = os.path.join(out_folder, "accuracy_plot.png")
+plt.savefig(accuracy_plot_path)
+plt.close()
+
+# Plotting the training and validation loss
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Model Loss')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend(['Train', 'Validation'], loc='upper left')
+loss_plot_path = os.path.join(out_folder, "loss_plot.png")
+plt.savefig(loss_plot_path)
+plt.close()
+
+print("Classification report and history plots saved successfully.")
